@@ -35,10 +35,11 @@ app.get("/api/menu", (req, res) => {
     {id:4,name:"หมูสามชั้น",price:80,category:"ของเพิ่ม",emoji:"🥓",desc:"หมูสามชั้นสไลซ์"},
     {id:5,name:"หมูนุ่ม",price:80,category:"ของเพิ่ม",emoji:"🥩",desc:"หมูนุ่มหมักสูตรของร้าน"},
     {id:6,name:"ตับ",price:70,category:"ของเพิ่ม",emoji:"🍖",desc:"ตับสดสไลซ์"},
-    {id:7,name:"ไข่ไก่",price:10,category:"ของเพิ่ม",emoji:"🥚",desc:"ไข่ไก่สด"},
-    {id:8,name:"ผักสด",price:30,category:"ของเพิ่ม",emoji:"🥬",desc:"ผักสดสำหรับหมูกระทะ"},
-    {id:9,name:"น้ำอัดลม",price:20,category:"เครื่องดื่ม",emoji:"🥤",desc:"เครื่องดื่มเย็น ๆ"},
-    {id:10,name:"น้ำเปล่า",price:10,category:"เครื่องดื่ม",emoji:"💧",desc:"น้ำดื่มแช่เย็น"}
+    {id:7,name:"กุ้ง",price:50,category:"ของเพิ่ม",emoji:"🦐",desc:"กุ้งสด"}
+    {id:8,name:"ไข่ไก่",price:10,category:"ของเพิ่ม",emoji:"🥚",desc:"ไข่ไก่สด"},
+    {id:9,name:"ผักสด",price:30,category:"ของเพิ่ม",emoji:"🥬",desc:"ผักสดสำหรับหมูกระทะ"},
+    {id:10,name:"น้ำอัดลม",price:20,category:"เครื่องดื่ม",emoji:"🥤",desc:"เครื่องดื่มเย็น ๆ"},
+    {id:11,name:"น้ำเปล่า",price:10,category:"เครื่องดื่ม",emoji:"💧",desc:"น้ำดื่มแช่เย็น"}
   ]);
 });
 
