@@ -29,9 +29,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/api/menu", (req, res) => {
   res.json([
-    {id:1,name:"ชุดเล็ก",price:250,category:"หมูกระทะ",emoji:"🥓",desc:"ชุดหมูกระทะสำหรับ 1–2 ท่าน"},
-    {id:2,name:"ชุดใหญ่",price:350,category:"หมูกระทะ",emoji:"🥩",desc:"ชุดหมูกระทะสำหรับ 2–3 ท่าน"},
-    {id:3,name:"ชุดจัมโบ้",price:500,category:"หมูกระทะ",emoji:"🍖",desc:"ชุดใหญ่พิเศษสำหรับครอบครัว"},
+    {id:1,name:"ชุดเล็ก",price:250,category:"หมูกระทะ",emoji:"🍲",desc:"ชุดหมูกระทะสำหรับ 1–2 ท่าน"},
+    {id:2,name:"ชุดใหญ่",price:350,category:"หมูกระทะ",emoji:"🍲",desc:"ชุดหมูกระทะสำหรับ 2–3 ท่าน"},
+    {id:3,name:"ชุดจัมโบ้",price:500,category:"หมูกระทะ",emoji:"🍲",desc:"ชุดใหญ่พิเศษสำหรับครอบครัว"},
     {id:4,name:"หมูสามชั้น",price:80,category:"ของเพิ่ม",emoji:"🥓",desc:"หมูสามชั้นสไลซ์"},
     {id:5,name:"หมูนุ่ม",price:80,category:"ของเพิ่ม",emoji:"🥩",desc:"หมูนุ่มหมักสูตรของร้าน"},
     {id:6,name:"ตับ",price:70,category:"ของเพิ่ม",emoji:"🍖",desc:"ตับสดสไลซ์"},
