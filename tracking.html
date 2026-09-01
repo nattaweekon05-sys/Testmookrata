@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ติดตามรายการ | คุณแอมหมูกระทะ</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+.track-page{min-height:calc(100vh - 72px);padding:70px 20px;background:#fff4e6}
+.track-wrap{max-width:700px;margin:auto}
+.track-form{background:#fff;padding:30px;border-radius:24px;box-shadow:0 12px 40px #00000010}
+.track-form label{display:block;margin:14px 0}
+.track-form button{margin-top:10px}
+.status-card{margin-top:25px;background:#fff;border-radius:24px;padding:28px;box-shadow:0 12px 40px #00000010}
+.status-title{text-align:center}
+.status-pill{display:inline-block;margin-top:10px;padding:8px 18px;border-radius:30px;background:#fff0dc;color:#e85d04;font-weight:600}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:30px 0 15px}
+.step{text-align:center;color:#999;font-size:14px}
+.step .dot{width:42px;height:42px;margin:0 auto 8px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center}
+.step.active{color:#e85d04}
+.step.active .dot{background:#e85d04;color:#fff}
+.order-list{border-top:1px solid #eee;margin-top:20px;padding-top:15px}
+.order-row{display:flex;justify-content:space-between;padding:8px 0}
+.back{display:inline-block;margin-top:18px;color:#e85d04;text-decoration:none}
+@media(max-width:600px){.steps{grid-template-columns:repeat(2,1fr);row-gap:18px}}
+</style>
+</head>
+<body>
+<header>
+<a class="brand" href="/">🔥 <span>คุณแอมหมูกระทะ</span></a>
+<nav><a href="/">หน้าแรก</a><a href="/#menu">เมนู</a><a href="/tracking.html">ติดตามรายการ</a></nav>
+<button class="cart" onclick="location.href='/'">🛒 สั่งอาหาร</button>
+</header>
+
+<main class="track-page">
+<div class="track-wrap">
+<div class="title">
+<small>ORDER TRACKING</small>
+<h2>📦 ติดตามรายการอาหาร</h2>
+<p>กรอกเลขออเดอร์และเบอร์โทรศัพท์ที่ใช้สั่งอาหาร</p>
+</div>
+
+<form class="track-form" id="trackForm">
+<label>เลขที่ออเดอร์
+<input id="orderId" type="number" min="1" placeholder="เช่น 25" required>
+</label>
+<label>เบอร์โทรศัพท์
+<input id="phone" type="tel" placeholder="เช่น 095-892-8915" required>
+</label>
+<button class="btn full" type="submit">🔎 ตรวจสอบรายการ</button>
+</form>
+
+<div id="result"></div>
+<a class="back" href="/">← กลับหน้าร้าน</a>
+</div>
+</main>
+
+<script>
+const statuses = ["รอรับออเดอร์","กำลังเตรียมอาหาร","พร้อมรับ/กำลังจัดส่ง","เสร็จสิ้น"];
+
+function normalizePhone(v){ return v.replace(/[^0-9]/g,""); }
+
+document.getElementById("trackForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const id=document.getElementById("orderId").value;
+  const phone=normalizePhone(document.getElementById("phone").value);
+  const result=document.getElementById("result");
+  result.innerHTML="<div class='status-card' style='text-align:center'>กำลังค้นหา...</div>";
+
+  try{
+    const r=await fetch(`/api/orders/track?id=${encodeURIComponent(id)}&phone=${encodeURIComponent(phone)}`);
+    const data=await r.json();
+    if(!r.ok) throw new Error(data.error||"ไม่พบรายการ");
+
+    const current=statuses.indexOf(data.status);
+    const steps=statuses.map((s,i)=>`
+      <div class="step ${i<=current && data.status!=="ยกเลิก" ? "active":""}">
+        <div class="dot">${i===0?"📋":i===1?"👨‍🍳":i===2?"🛵":"✅"}</div>${s}
+      </div>`).join("");
+
+    const items=data.items.map(x=>`
+      <div class="order-row"><span>${x.name} × ${x.quantity}</span><b>${(x.price*x.quantity).toLocaleString()} บาท</b></div>
+    `).join("");
+
+    result.innerHTML=`
+      <div class="status-card">
+        <div class="status-title">
+          <h2>ออเดอร์ #${data.id}</h2>
+          <p>คุณ${data.customer_name} · ${data.order_type}</p>
+          <span class="status-pill">${data.status}</span>
+        </div>
+        ${data.status==="ยกเลิก" ? `<p style="text-align:center;color:#b00000;margin-top:20px">รายการนี้ถูกยกเลิก</p>` :
+        `<div class="steps">${steps}</div>`}
+        <div class="order-list">
+          <h3>รายการอาหาร</h3>
+          ${items}
+          <div class="order-row" style="font-size:20px;border-top:1px solid #eee;margin-top:8px;padding-top:14px">
+            <b>รวมทั้งหมด</b><b style="color:#e85d04">${data.total.toLocaleString()} บาท</b>
+          </div>
+        </div>
+        ${data.note ? `<p>📝 หมายเหตุ: ${data.note}</p>`:""}
+      </div>`;
+  }catch(err){
+    result.innerHTML=`<div class="status-card" style="text-align:center;color:#b00000">❌ ${err.message}</div>`;
+  }
+});
+</script>
+</body>
+</html>

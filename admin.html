@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>หลังบ้านร้าน</title>
+<link rel="stylesheet" href="style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet"></head>
+<body>
+<section class="section">
+<div class="title"><small>ADMIN</small><h2>📋 ระบบจัดการออเดอร์</h2><p>หน้านี้สำหรับเจ้าของร้าน</p></div>
+<div style="max-width:1100px;margin:auto">
+<div style="display:flex;gap:10px;margin-bottom:20px"><input id="key" placeholder="รหัสผู้ดูแล" value="admin123"><button class="btn" onclick="load()">โหลดออเดอร์</button></div>
+<div id="orders"></div>
+</div></section>
+<script>
+async function load(){
+ const key=document.getElementById('key').value;
+ const r=await fetch('/api/orders?key='+encodeURIComponent(key));
+ const data=await r.json();
+ if(!r.ok){alert(data.error);return}
+ document.getElementById('orders').innerHTML=data.length?data.map(o=>`
+ <div class="contactBox" style="text-align:left;margin:15px auto">
+  <h3>#${o.id} — ${o.customer_name}</h3>
+  <p>📞 ${o.phone} | ${o.order_type}</p>
+  <p>📍 ${o.address||'-'}</p>
+  <p>🍽️ ${o.items.map(x=>x.name+' × '+x.quantity).join(', ')}</p>
+  <p>💰 <b>${o.total.toLocaleString()} บาท</b></p>
+  <p>📝 ${o.note||'-'}</p>
+  <select onchange="setStatus(${o.id},this.value)">
+   ${['รอรับออเดอร์','กำลังเตรียมอาหาร','พร้อมรับ/กำลังจัดส่ง','เสร็จสิ้น','ยกเลิก'].map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}
+  </select>
+  <small>${o.created_at}</small>
+ </div>`).join(''):'<p style="text-align:center">ยังไม่มีออเดอร์</p>';
+}
+async function setStatus(id,status){
+ const key=document.getElementById('key').value;
+ await fetch('/api/orders/'+id+'?key='+encodeURIComponent(key),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
+ load();
+}
+load();
+</script>
+</body></html>

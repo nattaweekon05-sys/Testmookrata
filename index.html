@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>คุณแอมหมูกระทะ | สาขา 29 By.หนูเล็ก</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <a class="brand" href="#home">🔥 <span>คุณแอมหมูกระทะ</span></a>
+  <nav><a href="#home">หน้าแรก</a><a href="#menu">เมนู</a><a href="/tracking.html">ติดตามรายการ</a><a href="#contact">ติดต่อ</a></nav>
+  <button class="cart" onclick="openCart()">🛒 <span id="count">0</span></button>
+</header>
+
+<main>
+<section id="home" class="hero">
+  <div class="heroText">
+    <div class="badge">สาขา 29 By.หนูเล็ก</div>
+    <h1>อิ่มอร่อยกับ<br><span>หมูกระทะร้อน ๆ</span></h1>
+    <p>วัตถุดิบสดใหม่ น้ำจิ้มรสเด็ด บรรยากาศสบาย ๆ เหมาะกับการมานั่งกินกับครอบครัวและเพื่อน</p>
+    <a class="btn" href="#menu">ดูเมนู & สั่งอาหาร</a>
+  </div>
+  <div class="heroPlate">🥩<div>🔥</div></div>
+</section>
+
+<section id="menu" class="section">
+  <div class="title"><small>OUR MENU</small><h2>เมนูของเรา</h2><p>เลือกชุดที่ต้องการแล้วเพิ่มลงตะกร้าได้เลย</p></div>
+  <div id="menuGrid" class="grid"></div>
+</section>
+
+<section class="info">
+  <div><b>🕓 เวลาเปิดร้าน</b><span>16:00 – 22:00 น.</span></div>
+  <div><b>📞 โทรสั่งอาหาร</b><span>095-892-8915</span></div>
+  <div><b>📍 สาขา 29</b><span>คุณแอมหมูกระทะ By.หนูเล็ก</span></div>
+</section>
+
+<section id="contact" class="section contact">
+  <div class="title"><small>CONTACT</small><h2>ติดต่อร้าน</h2></div>
+  <div class="contactBox">
+    <p>📞 <b>095-892-8915</b></p>
+    <p>🕓 เปิดทุกวัน 16:00 – 22:00 น.</p>
+    <a class="btn" href="tel:0958928915">โทรหาร้าน</a>
+  </div>
+</section>
+</main>
+
+<div id="cartModal" class="modal">
+  <div class="drawer">
+    <div class="drawerHead"><h2>🛒 ตะกร้าของคุณ</h2><button onclick="closeCart()">✕</button></div>
+    <div id="cartItems"></div>
+    <div class="total"><span>รวม</span><b><span id="total">0</span> บาท</b></div>
+    <button class="btn full" onclick="showCheckout()">ไปสั่งอาหาร</button>
+  </div>
+</div>
+
+<div id="checkoutModal" class="modal">
+  <div class="checkout">
+    <div class="drawerHead"><h2>ยืนยันการสั่งซื้อ</h2><button onclick="closeCheckout()">✕</button></div>
+    <form id="orderForm">
+      <label>ชื่อผู้สั่ง<input id="name" required></label>
+      <label>เบอร์โทร<input id="phone" type="tel" required></label>
+      <label>รับอาหารแบบ
+        <select id="type"><option value="รับที่ร้าน">🏪 รับที่ร้าน</option><option value="จัดส่ง">🛵 จัดส่ง</option></select>
+      </label>
+      <label>ที่อยู่จัดส่ง (ถ้ามี)<textarea id="address"></textarea></label>
+      <label>หมายเหตุ<textarea id="note" placeholder="เช่น ไม่ใส่ผัก / เพิ่มน้ำจิ้ม"></textarea></label>
+      <button class="btn full" type="submit">✅ ยืนยันออเดอร์</button>
+    </form>
+    <div id="result"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
